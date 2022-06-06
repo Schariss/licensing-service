@@ -46,4 +46,9 @@ public class LicensingServiceApplication {
         return messageSource;
     }
 
+    /***
+     * build the licensing service as an executable JAR and then start the JAR from the command line :
+     * mvn clean package && java -jar target/licensing-service-0.0.1-SNAPSHOT.jar 
+     */
+
 }
