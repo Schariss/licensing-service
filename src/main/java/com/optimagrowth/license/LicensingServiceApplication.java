@@ -1,5 +1,6 @@
 package com.optimagrowth.license;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
@@ -11,6 +12,9 @@ import java.util.Locale;
 
 @SpringBootApplication
 public class LicensingServiceApplication {
+
+    @Value("${local.lang}")
+    private String local;
 
     public static void main(String[] args) {
         SpringApplication.run(LicensingServiceApplication.class, args);
@@ -37,7 +41,8 @@ public class LicensingServiceApplication {
          * Sets the base name of the languages properties files 
          */
         messageSource.setBasenames("messages");
-        messageSource.setDefaultLocale(Locale.US);
+        /*messageSource.setDefaultLocale(Locale.US);*/
+        messageSource.setDefaultLocale(Locale.forLanguageTag(local));
         return messageSource;
     }
 

@@ -35,7 +35,7 @@ public class LicenseController {
     public ResponseEntity<License> getLicense(
             @PathVariable("organizationId") String organizationId,
             @PathVariable("licenseId") String licenseId) {
-        License license = licenseService.getLicense(licenseId,organizationId);
+        License license = licenseService.getLicense(organizationId, licenseId);
         license.add(linkTo(methodOn(LicenseController.class)
                 .getLicense(licenseId, organizationId)).withSelfRel());
         license.add(linkTo(methodOn(LicenseController.class)
@@ -58,8 +58,8 @@ public class LicenseController {
     public ResponseEntity<String> createLicense(
             @PathVariable("organizationId") String organizationId,
             @RequestBody License request,
-            @RequestHeader(value = "Accept-Language", required = false) Locale locale) {
-        return ResponseEntity.ok(licenseService.createLicense(request, organizationId, locale));
+            @RequestHeader(value = "Accept-Language", required = false) String locale) {
+        return ResponseEntity.ok(licenseService.createLicense(request, organizationId, Locale.forLanguageTag(locale)));
     }
 
     @DeleteMapping(value="/{licenseId}")
