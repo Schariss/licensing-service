@@ -16,18 +16,29 @@ public class LicensingServiceApplication {
         SpringApplication.run(LicensingServiceApplication.class, args);
     }
 
-    @Bean
+   /* @Bean
     public LocaleResolver localeResolver() {
         SessionLocaleResolver localeResolver = new SessionLocaleResolver();
+        *//***
+         * Sets US as the default locale
+        *//*
         localeResolver.setDefaultLocale(Locale.US);
         return localeResolver;
-    }
+    }*/
 
     @Bean
     public ResourceBundleMessageSource messageSource() {
         ResourceBundleMessageSource messageSource = new ResourceBundleMessageSource();
+        /***
+         * Doesn’t throw an error if a message isn’t found, instead it returns the message code
+        */
         messageSource.setUseCodeAsDefaultMessage(true);
+        /***
+         * Sets the base name of the languages properties files 
+         */
         messageSource.setBasenames("messages");
+        messageSource.setDefaultLocale(Locale.US);
         return messageSource;
     }
+
 }
