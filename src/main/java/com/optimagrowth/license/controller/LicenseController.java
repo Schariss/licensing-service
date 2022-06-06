@@ -8,6 +8,9 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.Locale;
 
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
+
 /*
     Tells Spring Boot that this is a REST-based service and it will automatically
     serialize/deserialize service requests/responses via JSON
@@ -33,6 +36,14 @@ public class LicenseController {
             @PathVariable("organizationId") String organizationId,
             @PathVariable("licenseId") String licenseId) {
         License license = licenseService.getLicense(licenseId,organizationId);
+        license.add(linkTo(methodOn(LicenseController.class)
+                .getLicense(licenseId, organizationId)).withSelfRel());
+        license.add(linkTo(methodOn(LicenseController.class)
+                .updateLicense(organizationId, license)).withRel("updateLicense"));
+        license.add(linkTo(methodOn(LicenseController.class)
+                .createLicense(organizationId, license, null)).withRel("createLicense"));
+        license.add(linkTo(methodOn(LicenseController.class)
+                .deleteLicense(organizationId, licenseId)).withRel("deleteLicense"));
         return ResponseEntity.ok(license);
     }
 
