@@ -15,6 +15,13 @@ COPY ${JAR_FILE} licensing-service.jar
 EXPOSE 8080
 
 # Execute the application
-ENTRYPOINT ["java", "-jar", "licensing-service.jar"]
+# docker run -e JAVA_OPTS=-Dserver.port=9000 evato/licensing-service
+ENTRYPOINT ["sh", "-c", "exec java ${JAVA_OPTS} -jar licensing-service.jar"]
+
+# $@ is all of the parameters passed to the script
+# $@ is nearly the same as $*, both meaning all command line arguments
+# ENTRYPOINT ["sh", "-c", "java ${JAVA_OPTS} -jar /app.jar ${0} ${@}"]
+
+#ENTRYPOINT ["java", "-jar", "licensing-service.jar"]
 
 
