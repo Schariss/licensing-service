@@ -16,12 +16,14 @@ EXPOSE 8080
 
 # Execute the application
 # docker run -e JAVA_OPTS=-Dserver.port=9000 evato/licensing-service
-ENTRYPOINT ["sh", "-c", "exec java ${JAVA_OPTS} -jar licensing-service.jar"]
+#ENTRYPOINT ["sh", "-c", "exec java ${JAVA_OPTS} -jar licensing-service.jar"]
 
 # $@ is all of the parameters passed to the script
 # $@ is nearly the same as $*, both meaning all command line arguments
-# ENTRYPOINT ["sh", "-c", "java ${JAVA_OPTS} -jar /app.jar ${0} ${@}"]
+# docker run -p 9000:9000 evato/licensing-service --server.port=9000
+ENTRYPOINT ["sh", "-c", "java ${JAVA_OPTS} -jar /licensing-service.jar ${0} ${@}"]
 
 #ENTRYPOINT ["java", "-jar", "licensing-service.jar"]
 
-
+# docker build --build-arg JAR_FILE=target/*.jar -t evato/licensing-service .
+# 450 MB size of the image
