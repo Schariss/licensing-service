@@ -1,0 +1,23 @@
+version: '3'
+
+services:
+  # Applies a label to each service launched. This becomes the DNS entry for the Docker instance when it starts,
+  # which is how other services access it
+  licensing-service:
+    image: evato/licensing-service
+    # container_name:
+    build:
+      context: .
+      args:
+        JAR_FILE: target/*.jar
+    ports:
+    - "8080:8080"
+    # environment:
+    #  - "SPRING_PROFILES_ACTIVE=dev"
+    networks:
+      backend:
+      #  aliases:
+      #     - "licenseservice"
+networks:
+  backend:
+    driver: bridge

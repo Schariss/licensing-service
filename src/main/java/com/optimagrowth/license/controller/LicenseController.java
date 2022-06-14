@@ -31,13 +31,13 @@ public class LicenseController {
 
     private final LicenseService licenseService;
 
-    @GetMapping(value="/{licenseId}")
+    @GetMapping(value = "/{licenseId}")
     public ResponseEntity<License> getLicense(
             @PathVariable("organizationId") String organizationId,
             @PathVariable("licenseId") String licenseId) {
         License license = licenseService.getLicense(organizationId, licenseId);
         license.add(linkTo(methodOn(LicenseController.class)
-                .getLicense(licenseId, organizationId)).withSelfRel());
+                .getLicense(organizationId, licenseId)).withSelfRel());
         license.add(linkTo(methodOn(LicenseController.class)
                 .updateLicense(organizationId, license)).withRel("updateLicense"));
         license.add(linkTo(methodOn(LicenseController.class)
@@ -62,7 +62,7 @@ public class LicenseController {
         return ResponseEntity.ok(licenseService.createLicense(request, organizationId, Locale.forLanguageTag(locale)));
     }
 
-    @DeleteMapping(value="/{licenseId}")
+    @DeleteMapping(value = "/{licenseId}")
     public ResponseEntity<String> deleteLicense(
             @PathVariable("organizationId") String organizationId,
             @PathVariable("licenseId") String licenseId) {

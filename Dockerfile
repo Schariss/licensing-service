@@ -11,6 +11,7 @@ WORKDIR /workspace/licensing-service
 # RUN mkdir -p target/dependency && (cd target/dependency; jar -xf ../*.jar)
 
 # Defines the JAR_FILE variable set by dockerfile-maven-plugin (spotify plugin)
+# docker build --build-arg JAR_FILE=target/*.jar .
 ARG JAR_FILE
 COPY ${JAR_FILE} target/${JAR_FILE}
 RUN mkdir -p target/dependency && (cd target/dependency; jar -xf ../${JAR_FILE})
