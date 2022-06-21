@@ -1,0 +1,14 @@
+spring:
+    application:
+        # specifies the name of the licensing service so that
+        # the Spring Cloud Config client knows which service is being looked up
+        name: licensing-service
+    profiles:
+        active: dev
+    # old version of spring cloud and spring boot
+    # cloud:
+    #    config:
+    #        uri: http://localhost:8071
+    # new implementation
+    config:
+        import: optional:configserver:http://localhost:8071

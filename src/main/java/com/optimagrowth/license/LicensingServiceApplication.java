@@ -13,8 +13,8 @@ import java.util.Locale;
 @SpringBootApplication
 public class LicensingServiceApplication {
 
-    @Value("${local.lang}")
-    private String local;
+   /* @Value("${local.lang}")
+    private String local;*/
 
     public static void main(String[] args) {
         SpringApplication.run(LicensingServiceApplication.class, args);
@@ -42,7 +42,7 @@ public class LicensingServiceApplication {
          */
         messageSource.setBasenames("messages");
         /*messageSource.setDefaultLocale(Locale.US);*/
-        messageSource.setDefaultLocale(Locale.forLanguageTag(local));
+        messageSource.setDefaultLocale(Locale.forLanguageTag("en"));
         return messageSource;
     }
 
