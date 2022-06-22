@@ -18,6 +18,7 @@ import javax.persistence.Table;
 @Entity
 @Table(name = "licenses")
 /***
+ * @author Adnane Chahid
  * RepresentationModel<License> gives us the ability to add links to the License model class
 */
 public class License extends RepresentationModel<License> {
