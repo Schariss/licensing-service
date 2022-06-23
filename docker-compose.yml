@@ -24,16 +24,18 @@ services:
     image: evato/configserver:0.0.1-SNAPSHOT
     ports:
       - "8071:8071"
+    environment:
+      DB_HOST_NAME: "database"
     networks:
       backend:
         aliases:
           - "configserver"
   licensing-service:
     image: evato/licensing-service:0.0.2-SNAPSHOT
-    build:
-      context: .
-      args:
-        JAR_FILE: target/*.jar
+#    build:
+#      context: .
+#      args:
+#        JAR_FILE: target/*.jar
     environment:
       # PROFILE: "dev"
       SPRING_CONFIG_IMPORT: "optional:configserver:http://configserver:8071"
