@@ -3,6 +3,7 @@ package com.optimagrowth.license;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.cloud.context.config.annotation.RefreshScope;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.support.ResourceBundleMessageSource;
 import org.springframework.web.servlet.LocaleResolver;
@@ -11,6 +12,9 @@ import org.springframework.web.servlet.i18n.SessionLocaleResolver;
 import java.util.Locale;
 
 @SpringBootApplication
+//This annotation only reloads the custom Spring properties you have in your application configuration.
+// Items like your database configuration used by Spring Data won’t be reloaded by this annotation.
+//@RefreshScope
 public class LicensingServiceApplication {
 
    /* @Value("${local.lang}")
@@ -38,7 +42,7 @@ public class LicensingServiceApplication {
         */
         messageSource.setUseCodeAsDefaultMessage(true);
         /***
-         * Sets the base name of the languages properties files 
+         * Sets the base name of the languages properties files
          */
         messageSource.setBasenames("messages");
         /*messageSource.setDefaultLocale(Locale.US);*/
@@ -48,7 +52,7 @@ public class LicensingServiceApplication {
 
     /***
      * build the licensing service as an executable JAR and then start the JAR from the command line :
-     * mvn clean package && java -jar target/licensing-service-0.0.1-SNAPSHOT.jar 
+     * mvn clean package && java -jar target/licensing-service-0.0.1-SNAPSHOT.jar
      */
 
 }
