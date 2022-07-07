@@ -17,6 +17,8 @@ import org.springframework.context.MessageSource;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.when;
 
+// Use parameters for initialization of mocks that you use only in that specific test method
+// Initializes mocks annotated with @Mock, so that explicit usage of MockitoAnnotations#initMocks(Object) is not necessary
 @ExtendWith(MockitoExtension.class)
 class LicenseServiceTest {
 
@@ -29,11 +31,11 @@ class LicenseServiceTest {
     @InjectMocks
     private LicenseService underTest;
 
-    @BeforeEach
-    void setUp() {
-        // Initialize all the mocks in the current class
-        MockitoAnnotations.openMocks(this);
-    }
+//    @BeforeEach
+//    void setUp() {
+//        // Initialize all the mocks in the current class
+//        MockitoAnnotations.openMocks(this);
+//    }
 
     @Test
     void cannotGetLicenseWhenLicenseIsNULL() {
@@ -41,7 +43,7 @@ class LicenseServiceTest {
         String licenseId = "1234";
         String organizationId = "OptimaGrowth";
         when(messageSource.getMessage("license.search.error.message", null, null)).
-                thenReturn("Unable to find license with License id %s and Organization id %s");
+                thenReturn("Unable to find license");
         // then
         assertThrows(IllegalArgumentException.class, () -> underTest.getLicense(licenseId, organizationId));
         Mockito.verify(licenseRepository).findByOrganizationIdAndLicenseId(organizationId, licenseId);
