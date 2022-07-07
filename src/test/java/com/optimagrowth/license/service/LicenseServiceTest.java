@@ -65,7 +65,7 @@ class LicenseServiceTest {
     }
 
     @Test
-    void updateLicense() {
+    void canUpdateLicense() {
         // given
         License license = new License();
         // when
@@ -78,7 +78,18 @@ class LicenseServiceTest {
     }
 
     @Test
-    @Disabled
-    void deleteLicense() {
+    void canDeleteLicense() {
+        // given
+        String licenseId = "licenseId";
+        // when
+        when(messageSource.getMessage("license.delete.message", null, null)).
+                thenReturn("Deleting license");
+        Mockito.lenient().when(serviceConfig.getProperty()).thenReturn("I AM THE DEFAULT");
+        underTest.deleteLicense(licenseId);
+        // then
+        ArgumentCaptor<String> licenseIdArgumentCaptor = ArgumentCaptor.forClass(String.class);
+        verify(licenseRepository).deleteById(licenseIdArgumentCaptor.capture());
+        String capturedLicenseId = licenseIdArgumentCaptor.getValue();
+        assertThat(licenseId).isEqualTo(capturedLicenseId);
     }
 }
