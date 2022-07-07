@@ -3,19 +3,21 @@ package com.optimagrowth.license.service;
 import com.optimagrowth.license.config.ServiceConfig;
 import com.optimagrowth.license.model.License;
 import com.optimagrowth.license.repository.LicenseRepository;
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
+import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.context.MessageSource;
 
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.when;
 
+@ExtendWith(MockitoExtension.class)
 class LicenseServiceTest {
 
     @Mock
@@ -26,17 +28,11 @@ class LicenseServiceTest {
 //    private ServiceConfig serviceConfig;
     @InjectMocks
     private LicenseService underTest;
-    private AutoCloseable autoCloseable;
 
     @BeforeEach
     void setUp() {
         // Initialize all the mocks in the current class
-        autoCloseable = MockitoAnnotations.openMocks(this);
-    }
-
-    @AfterEach
-    void tearDown() throws Exception {
-        autoCloseable.close();
+        MockitoAnnotations.openMocks(this);
     }
 
     @Test
