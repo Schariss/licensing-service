@@ -1,5 +1,7 @@
 package com.optimagrowth.license.model;
 
+import lombok.AllArgsConstructor;
+import lombok.NoArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
@@ -21,6 +23,8 @@ import javax.persistence.Table;
  * @author Adnane Chahid
  * RepresentationModel<License> gives us the ability to add links to the License model class
 */
+@AllArgsConstructor
+@NoArgsConstructor
 public class License extends RepresentationModel<License> {
     @Id
     @Column(name = "license_id", nullable = false)
