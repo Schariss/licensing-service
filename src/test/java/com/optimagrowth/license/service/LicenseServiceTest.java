@@ -11,6 +11,7 @@ import org.springframework.context.MessageSource;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -37,8 +38,8 @@ class LicenseServiceTest {
     }
 
     @Test
-    void canGetLicense() {
-        // when
+    void willThrowExceptionWhenLicenceIsNULL() {
+        // given
         String licenseId = "1234";
         String organizationId = "OptimaGrowth";
         // Mockito throws an UnsupportedStubbingException when an initialized mock is not called by one of the test methods
@@ -46,9 +47,26 @@ class LicenseServiceTest {
         Mockito.lenient().when(serviceConfig.getProperty()).thenReturn("I AM Adnane");
         when(messageSource.getMessage("license.search.error.message", null, null)).
                 thenReturn("Unable to find license");
+        // when
         // then
         assertThrows(IllegalArgumentException.class, () -> underTest.getLicense(licenseId, organizationId));
         Mockito.verify(licenseRepository).findByOrganizationIdAndLicenseId(organizationId, licenseId);
+    }
+
+    @Test
+    void canGetLicense() {
+        // given
+        String licenseId = "1234";
+        String organizationId = "OptimaGrowth";
+        License license = new License(licenseId, "description", organizationId,
+                "licenseName", "licenseType", "I AM THE DEFAULT");
+        // when
+        given(licenseRepository.findByOrganizationIdAndLicenseId(organizationId, licenseId))
+                .willReturn(license);
+        License returnedLicense = underTest.getLicense(licenseId, organizationId);
+        // then
+        Mockito.verify(licenseRepository).findByOrganizationIdAndLicenseId(organizationId, licenseId);
+        assertThat(returnedLicense).isEqualTo(license);
     }
 
     @Test
