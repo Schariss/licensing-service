@@ -65,8 +65,16 @@ class LicenseServiceTest {
     }
 
     @Test
-    @Disabled
     void updateLicense() {
+        // given
+        License license = new License();
+        // when
+        underTest.updateLicense(license);
+        // then
+        ArgumentCaptor<License> licenseArgumentCaptor = ArgumentCaptor.forClass(License.class);
+        verify(licenseRepository).save(licenseArgumentCaptor.capture());
+        License capturedLicense = licenseArgumentCaptor.getValue();
+        assertThat(license).isEqualTo(capturedLicense);
     }
 
     @Test
