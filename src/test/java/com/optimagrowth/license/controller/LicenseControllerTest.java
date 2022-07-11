@@ -25,7 +25,7 @@ class LicenseControllerTest {
 
     @BeforeAll
     static void beforeAll() {
-        baseUrl = "v1/organization/{organizationId}/license";
+        baseUrl = "http://localhost:8080/v1/organization/{organizationId}/license";
     }
 
     @Test
@@ -33,13 +33,11 @@ class LicenseControllerTest {
         String organizationId = "OptimaGrowth";
         String licenseId = "1234";
         License license = new License(licenseId, "description", organizationId, "productName",
-                "licenseType", );
+                "licenseType", "I AM DEFAULT");
         when(licenseService.getLicense(licenseId, organizationId)).thenReturn(license);
-        mockMvc.perform(get(baseUrl + "/{licenseId}", organizationId, licenseId)
-                .contentType(MediaType.APPLICATION_JSON))
-                .andExpect(status().isOk())
-                .andExpect()
-        )
+        mockMvc.perform(get(baseUrl + "/{licenseId}", organizationId, licenseId))
+                .andExpect(status().isOk());
+                //.andExpect();
     }
 
     @Test
