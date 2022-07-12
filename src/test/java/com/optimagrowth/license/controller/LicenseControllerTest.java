@@ -10,10 +10,15 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
+import static org.hamcrest.Matchers.hasSize;
+import static org.hamcrest.Matchers.is;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
+// @WebMvcTest does not scan beans for our services, so we have to provide a bean
+// for anything that the controller depends on
 @WebMvcTest(LicenseController.class)
 class LicenseControllerTest {
 
@@ -36,8 +41,11 @@ class LicenseControllerTest {
                 "licenseType", "I AM DEFAULT");
         when(licenseService.getLicense(licenseId, organizationId)).thenReturn(license);
         mockMvc.perform(get(baseUrl + "/{licenseId}", organizationId, licenseId))
-                .andExpect(status().isOk());
-                //.andExpect();
+                .andExpect(status().isOk())
+                .andExpect(content().contentType("application/hal+json"))
+                .andExpect(jsonPath("$.licenseId", is(licenseId)))
+                .andExpect(jsonPath("$.organizationId", is(organizationId)))
+                .andDo(print());
     }
 
     @Test
