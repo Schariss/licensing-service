@@ -3,6 +3,8 @@ package com.optimagrowth.license.controller;
 import com.optimagrowth.license.model.License;
 import com.optimagrowth.license.service.LicenseService;
 import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
@@ -30,22 +32,33 @@ class LicenseControllerTest {
 
     @BeforeAll
     static void beforeAll() {
-        baseUrl = "http://localhost:8080/v1/organization/{organizationId}/license";
+        baseUrl = "/v1/organization/{organizationId}/license";
     }
 
-    @Test
-    void getLicense() throws Exception {
-        String organizationId = "OptimaGrowth";
-        String licenseId = "1234";
-        License license = new License(licenseId, "description", organizationId, "productName",
-                "licenseType", "I AM DEFAULT");
-        when(licenseService.getLicense(licenseId, organizationId)).thenReturn(license);
-        mockMvc.perform(get(baseUrl + "/{licenseId}", organizationId, licenseId))
-                .andExpect(status().isOk())
-                .andExpect(content().contentType("application/hal+json"))
-                .andExpect(jsonPath("$.licenseId", is(licenseId)))
-                .andExpect(jsonPath("$.organizationId", is(organizationId)))
-                .andDo(print());
+    @Nested
+    @DisplayName("getLicence")
+    class GetLicence{
+        @Test
+        @DisplayName("When licenseId and OrganizationId found")
+        void getLicense() throws Exception {
+            String organizationId = "OptimaGrowth";
+            String licenseId = "1234";
+            License license = new License(licenseId, "description", organizationId, "productName",
+                    "licenseType", "I AM DEFAULT");
+            when(licenseService.getLicense(licenseId, organizationId)).thenReturn(license);
+            mockMvc.perform(get(baseUrl + "/{licenseId}", organizationId, licenseId))
+                    .andExpect(status().isOk())
+                    .andExpect(content().contentType("application/hal+json"))
+                    .andExpect(jsonPath("$.licenseId", is(licenseId)))
+                    .andExpect(jsonPath("$.organizationId", is(organizationId)))
+                    .andDo(print());
+        }
+
+        @Test
+        @DisplayName("When licenseId or OrganizationId not found")
+        void getLicence(){
+
+        }
     }
 
     @Test
