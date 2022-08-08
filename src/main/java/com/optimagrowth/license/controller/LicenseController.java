@@ -1,5 +1,6 @@
 package com.optimagrowth.license.controller;
 
+import com.optimagrowth.license.exception.ResourceNotFoundException;
 import com.optimagrowth.license.model.License;
 import com.optimagrowth.license.service.LicenseService;
 import lombok.AllArgsConstructor;
@@ -34,7 +35,7 @@ public class LicenseController {
     @GetMapping(value = "/{licenseId}")
     public ResponseEntity<License> getLicense(
             @PathVariable("licenseId") String licenseId,
-            @PathVariable("organizationId") String organizationId) {
+            @PathVariable("organizationId") String organizationId) throws ResourceNotFoundException {
 
         License license = licenseService.getLicense(licenseId, organizationId);
         license.add(

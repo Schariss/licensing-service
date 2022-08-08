@@ -1,6 +1,7 @@
 package com.optimagrowth.license.service;
 
 import com.optimagrowth.license.config.ServiceConfig;
+import com.optimagrowth.license.exception.ResourceNotFoundException;
 import com.optimagrowth.license.model.License;
 import com.optimagrowth.license.repository.LicenseRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,10 +25,10 @@ public class LicenseService {
     @Autowired
     private ServiceConfig config;
 
-    public License getLicense(String licenseId, String organizationId){
+    public License getLicense(String licenseId, String organizationId) throws ResourceNotFoundException{
         License license = licenseRepository.findByOrganizationIdAndLicenseId(organizationId, licenseId);
         if (null == license) {
-            throw new IllegalArgumentException(
+            throw new ResourceNotFoundException(
                     String.format(
                             messages.getMessage("license.search.error.message", null, null),
                             licenseId,
@@ -53,9 +54,7 @@ public class LicenseService {
 
     public String deleteLicense(String licenseId){
         licenseRepository.deleteById(licenseId);
-        String responseMessage = String.format(
+        return String.format(
                 messages.getMessage("license.delete.message", null, null), licenseId);
-
-        return responseMessage;
     }
 }
