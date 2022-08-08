@@ -9,11 +9,10 @@ import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.web.servlet.MockMvc;
 
-import static org.hamcrest.Matchers.is;
+import static org.hamcrest.Matchers.*;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.when;
-import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 // @WebMvcTest does not scan beans for our services, so we have to provide a bean
@@ -66,8 +65,7 @@ class LicenseControllerTest {
                 requestBuilder.getLicenseByIdAndOrganizationId(BASEURL, LICENSE_ID, ORGANIZATION_ID)
                         .andExpect(result -> assertTrue(result.getResolvedException() instanceof ResourceNotFoundException))
                         .andExpect(result -> assertEquals("Unable to find license with License id",
-                                result.getResolvedException().getMessage()))
-                        .andDo(print());
+                                result.getResolvedException().getMessage()));
             }
         }
         @Nested
@@ -85,15 +83,33 @@ class LicenseControllerTest {
                         PRODUCT_NAME, LICENSE_TYPE, COMMENT);
                 when(licenseService.getLicense(LICENSE_ID, ORGANIZATION_ID)).thenReturn(license);
             }
+
+            @Test
+            @DisplayName("Should return the HTTP status code ok (200)")
+            void shouldReturnHttpStatusCodeOk() throws Exception {
+                requestBuilder.getLicenseByIdAndOrganizationId(BASEURL, LICENSE_ID, ORGANIZATION_ID)
+                        .andExpect(status().isOk());
+            }
+
+            @Test
+            @DisplayName("Should return the information of the found license as HAL+JSON")
+            void shouldReturnInformationOfFoundTodoItemAsJSON() throws Exception {
+                requestBuilder.getLicenseByIdAndOrganizationId(BASEURL, LICENSE_ID, ORGANIZATION_ID)
+                        .andExpect(content().contentType("application/hal+json"));
+            }
+
             @Test
             @DisplayName("Should return the correct information of the found license")
             void getLicense() throws Exception {
                 requestBuilder.getLicenseByIdAndOrganizationId(BASEURL, LICENSE_ID, ORGANIZATION_ID)
-                        .andExpect(status().isOk())
-                        .andExpect(content().contentType("application/hal+json"))
                         .andExpect(jsonPath("$.licenseId", is(LICENSE_ID)))
                         .andExpect(jsonPath("$.organizationId", is(ORGANIZATION_ID)))
-                        .andDo(print());
+                        .andExpect(jsonPath("$.description", equalTo(DESCRIPTION)))
+                        .andExpect(jsonPath("$.productName", equalTo(PRODUCT_NAME)))
+                        .andExpect(jsonPath("$.licenseType", equalTo(LICENSE_TYPE)))
+                        .andExpect(jsonPath("$.comment", equalTo(COMMENT)))
+                        .andExpect(jsonPath("$", hasKey("_links")))
+                        .andExpect(jsonPath("$._links.length()", is(4)));
             }
         }
     }
