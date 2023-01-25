@@ -13,19 +13,21 @@ import java.util.List;
 public interface LicenseRepository extends CrudRepository<License, String> {
 
     /***
+     * find list of licenses related to an organization
      * @author Adnane Chahid
-     * @param organizationId
-     * @return List<License>
+     * @param organizationId organization id corresponding to the license
+     * @return List<License> list of related licenses
      * At startup, Spring will parse the name of the methods from the Repository interface,
      * convert them to an SQL statement based on the names, and then generate a dynamic proxy class to do the work
      */
-    public List<License> findByOrganizationId(String organizationId);
+    List<License> findByOrganizationId(String organizationId);
 
     /***
+     * find single license by its id and organization id
      * @author Adnane Chahid
-     * @param organizationId
-     * @param licenseId
-     * @return License
+     * @param organizationId organization id corresponding to the license
+     * @param licenseId license id
+     * @return License license object
      */
-    public License findByOrganizationIdAndLicenseId(String organizationId, String licenseId);
+    License findByOrganizationIdAndLicenseId(String organizationId, String licenseId);
 }

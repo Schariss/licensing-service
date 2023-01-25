@@ -10,9 +10,11 @@ import org.springframework.context.MessageSource;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
+import java.util.List;
 import java.util.Locale;
 import java.util.Random;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Service
 public class LicenseService {
@@ -36,6 +38,12 @@ public class LicenseService {
         }
 
         return license.withComment(config.getProperty());
+    }
+
+    public List<License> getLicensesByOrganizationId(String organizationId) {
+        List<License> licenses = licenseRepository.findByOrganizationId(organizationId)
+                .stream().map(l -> l.withComment(config.getProperty())).collect(Collectors.toList());
+        return licenses;
     }
 
     public License createLicense(License license, String organizationId){
