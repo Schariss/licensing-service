@@ -22,7 +22,7 @@ ARG DEPENDENCY=/workspace/licensing-service/target/dependency
 COPY --from=build ${DEPENDENCY}/BOOT-INF/lib /licensing-service/lib
 COPY --from=build ${DEPENDENCY}/META-INF /licensing-service/META-INF
 COPY --from=build ${DEPENDENCY}/BOOT-INF/classes /licensing-service
-ENTRYPOINT ["java","-cp","licensing-service:licensing-service/lib/*", "com.optimagrowth.license.LicensingServiceApplication"]
+ENTRYPOINT ["java", "-cp", "licensing-service:licensing-service/lib/*", "com.optimagrowth.license.LicensingServiceApplication"]
 
 # Build our Docker image using the spotify plugin
 # mvn package dockerfile:build

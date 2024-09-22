@@ -13,6 +13,7 @@ services:
       POSTGRES_DB: "ostock_dev"
     networks:
       backend:
+        # Specifies an alternative hostname for the service on the network
         aliases:
           - "database"
     healthcheck:
@@ -51,4 +52,5 @@ services:
       - backend
 networks:
   backend:
+#    Default network is bridge, so we don't need to specify it
     driver: bridge

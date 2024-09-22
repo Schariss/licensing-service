@@ -1,6 +1,7 @@
 package com.optimagrowth.license.service;
 
 import com.optimagrowth.license.config.ServiceConfig;
+import com.optimagrowth.license.exception.ResourceNotFoundException;
 import com.optimagrowth.license.model.License;
 import com.optimagrowth.license.repository.LicenseRepository;
 import org.junit.jupiter.api.*;
@@ -49,7 +50,7 @@ class LicenseServiceTest {
                 thenReturn("Unable to find license");
         // when
         // then
-        assertThrows(IllegalArgumentException.class, () -> underTest.getLicense(licenseId, organizationId));
+        assertThrows(ResourceNotFoundException.class, () -> underTest.getLicense(licenseId, organizationId));
         Mockito.verify(licenseRepository).findByOrganizationIdAndLicenseId(organizationId, licenseId);
     }
 
@@ -100,8 +101,8 @@ class LicenseServiceTest {
         // given
         String licenseId = "licenseId";
         // when
-        when(messageSource.getMessage("license.delete.message", null, null)).
-                thenReturn("Deleting license");
+        when(messageSource.getMessage("license.delete.message", null, null))
+                .thenReturn("Deleting license");
         Mockito.lenient().when(serviceConfig.getProperty()).thenReturn("I AM THE DEFAULT");
         underTest.deleteLicense(licenseId);
         // then
