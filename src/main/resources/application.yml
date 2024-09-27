@@ -11,4 +11,4 @@ spring:
     #        uri: http://localhost:8071
     # new implementation
     config:
-        import: optional:configserver:http://localhost:8071
+        import: optional:configserver:http://${SERVER_HOST_NAME:localhost}:8071

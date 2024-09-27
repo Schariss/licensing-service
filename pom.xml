@@ -17,7 +17,6 @@
         <java.version>11</java.version>
         <docker.image.prefix>evato</docker.image.prefix>
         <spring-cloud.version>2021.0.3</spring-cloud.version>
-        <exec-maven.version>3.4.1</exec-maven.version>
     </properties>
     <dependencies>
         <dependency>
@@ -50,9 +49,9 @@
             <optional>true</optional>
         </dependency>
         <dependency>
-            <groupId>io.springfox</groupId>
-            <artifactId>springfox-boot-starter</artifactId>
-            <version>3.0.0</version>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-configuration-processor</artifactId>
+            <optional>true</optional>
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -124,7 +123,6 @@
             <plugin>
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>exec-maven-plugin</artifactId>
-                <version>${exec-maven.version}</version>
                 <executions>
                     <execution>
                         <id>docker-build</id>
@@ -140,13 +138,30 @@
                                 <argument>--build-arg</argument>
                                 <argument>JAR_FILE=target/${project.build.finalName}.jar</argument>
                                 <argument>-t</argument>
-                                <argument>${docker.image.prefix}/${project.artifactId}:${project.version}</argument>
+                                <argument>${docker.image.prefix}/${project.artifactId}:latest</argument>
                                 <argument>.</argument>
                             </arguments>
                         </configuration>
                     </execution>
                     <execution>
-                        <id>docker-push</id>
+                        <id>docker-tag</id>
+                        <phase>install</phase>
+                        <goals>
+                            <goal>exec</goal>
+                        </goals>
+                        <configuration>
+                            <executable>docker</executable>
+                            <workingDirectory>${project.basedir}</workingDirectory>
+                            <arguments>
+                                <argument>image</argument>
+                                <argument>tag</argument>
+                                <argument>${docker.image.prefix}/${project.artifactId}:latest</argument>
+                                <argument>${docker.image.prefix}/${project.artifactId}:${project.version}</argument>
+                            </arguments>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>docker-push-tag</id>
                         <phase>install</phase>
                         <goals>
                             <goal>exec</goal>
@@ -157,6 +172,21 @@
                             <arguments>
                                 <argument>push</argument>
                                 <argument>${docker.image.prefix}/${project.artifactId}:${project.version}</argument>
+                            </arguments>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>docker-push-latest</id>
+                        <phase>install</phase>
+                        <goals>
+                            <goal>exec</goal>
+                        </goals>
+                        <configuration>
+                            <executable>docker</executable>
+                            <workingDirectory>${project.basedir}</workingDirectory>
+                            <arguments>
+                                <argument>push</argument>
+                                <argument>${docker.image.prefix}/${project.artifactId}</argument>
                             </arguments>
                         </configuration>
                     </execution>

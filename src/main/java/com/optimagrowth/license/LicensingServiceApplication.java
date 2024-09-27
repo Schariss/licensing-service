@@ -37,11 +37,11 @@ public class LicensingServiceApplication {
     @Bean
     public ResourceBundleMessageSource messageSource() {
         ResourceBundleMessageSource messageSource = new ResourceBundleMessageSource();
-        /***
-         * Doesn’t throw an error if a message isn’t found, instead it returns the message code
+        /*
+         * Does not throw an error if a message isn’t found, instead it returns the message code
         */
         messageSource.setUseCodeAsDefaultMessage(true);
-        /***
+        /*
          * Sets the base name of the languages properties files
          */
         messageSource.setBasenames("messages");
@@ -50,7 +50,7 @@ public class LicensingServiceApplication {
         return messageSource;
     }
 
-    /***
+    /*
      * build the licensing service as an executable JAR and then start the JAR from the command line :
      * mvn clean package && java -jar target/licensing-service-0.0.1-SNAPSHOT.jar
      */
