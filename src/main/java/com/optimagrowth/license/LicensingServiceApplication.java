@@ -12,8 +12,13 @@ import org.springframework.web.servlet.i18n.SessionLocaleResolver;
 import java.util.Locale;
 
 @SpringBootApplication
-//This annotation only reloads the custom Spring properties you have in your application configuration.
+// This annotation only reloads the custom Spring properties you have in your application configuration.
 // Items like your database configuration used by Spring Data won’t be reloaded by this annotation.
+// Actuator exposes now by default the POST /actuator/refresh endpoint
+// To query the changes made to your custom config you need to call the /refresh endpoint which is going to refresh
+// the config in your code ( better when used with ConfigurationProperties )
+// Warning : if you have multiple instances running you need to call /refresh on all the instances
+// use Service Discovery to query all the running instances and call /refresh on them
 //@RefreshScope
 public class LicensingServiceApplication {
 
