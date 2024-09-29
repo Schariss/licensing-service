@@ -1,5 +1,9 @@
 package com.optimagrowth.license.model;
 
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 import lombok.Getter;
@@ -7,20 +11,16 @@ import lombok.Setter;
 import lombok.ToString;
 import org.springframework.hateoas.RepresentationModel;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+
 
 @Getter @Setter @ToString
-/**
+/*
  * @Entity annotation
  * lets Spring know that this Java POJO is going to be mapping objects that will hold data
  */
 @Entity
 @Table(name = "licenses")
-/**
- * @author Adnane Chahid
+/*
  * RepresentationModel<License> gives us the ability to add links to the License model class
 */
 @AllArgsConstructor

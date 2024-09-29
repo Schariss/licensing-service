@@ -1,8 +1,10 @@
 package com.optimagrowth.license;
 
+import com.optimagrowth.license.config.VaultParams;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.cloud.context.config.annotation.RefreshScope;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.support.ResourceBundleMessageSource;
@@ -12,6 +14,7 @@ import org.springframework.web.servlet.i18n.SessionLocaleResolver;
 import java.util.Locale;
 
 @SpringBootApplication
+@EnableConfigurationProperties(value = {VaultParams.class})
 // This annotation only reloads the custom Spring properties you have in your application configuration.
 // Items like your database configuration used by Spring Data won’t be reloaded by this annotation.
 // Actuator exposes now by default the POST /actuator/refresh endpoint

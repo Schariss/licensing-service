@@ -1,10 +1,12 @@
 package com.optimagrowth.license.service;
 
 import com.optimagrowth.license.config.ServiceConfig;
+import com.optimagrowth.license.config.VaultParams;
 import com.optimagrowth.license.exception.ResourceNotFoundException;
 import com.optimagrowth.license.model.License;
 import com.optimagrowth.license.repository.LicenseRepository;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.MessageSource;
 import org.springframework.stereotype.Service;
 
@@ -12,7 +14,7 @@ import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
-
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class LicenseService {
@@ -20,6 +22,7 @@ public class LicenseService {
     private final MessageSource  messageSource;
     private final LicenseRepository licenseRepository;
     private final ServiceConfig config;
+    private final VaultParams vault;
 
 
     public License getLicense(String licenseId, String organizationId) throws ResourceNotFoundException{
@@ -32,13 +35,14 @@ public class LicenseService {
                             organizationId));
         }
 
+        log.info(vault.toString());
         return license.withComment(config.getProperty());
     }
 
     public List<License> getLicensesByOrganizationId(String organizationId) {
-        List<License> licenses = licenseRepository.findByOrganizationId(organizationId)
+        log.info(vault.toString());
+        return licenseRepository.findByOrganizationId(organizationId)
                 .stream().map(l -> l.withComment(config.getProperty())).collect(Collectors.toList());
-        return licenses;
     }
 
     public License createLicense(License license, String organizationId){
